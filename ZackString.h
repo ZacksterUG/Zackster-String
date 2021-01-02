@@ -50,12 +50,25 @@ namespace ZacksterString
 		{
 			return strcmp(this->Str, bufStr.Str);
 		}
+		int compareABC(char* bufStr)
+		{
+			return strcmp(this->Str, bufStr);
+		}
 		bool operator == (const str& bufStr)
 		{
 			if (bufStr.Size != this->Size) return false;
 			for (int i = 0; i < this->Size; i++)
 			{
 				if (bufStr.Str[i] != this->Str[i]) return false;
+			}
+			return true;
+		}
+		bool operator == (const char* bufStr)
+		{
+			if (strlen(bufStr)+1 != this->Size) return false;
+			for (int i = 0; i < this->Size; i++)
+			{
+				if (bufStr[i] != this->Str[i]) return false;
 			}
 			return true;
 		}
@@ -74,7 +87,7 @@ namespace ZacksterString
 		char* operator + (const str _Str)
 		{
 			int newSize = this->Size + _Str.Size - 1;
-			char* bufS = new char[newSize];
+			char* bufS = new char[newSize+1];
 			for (int i = 0; i < this->Size - 1; i++) bufS[i] = this->Str[i];
 			for (int i = 0; i < _Str.Size; i++) bufS[i + this->Size - 1] = _Str.Str[i];
 			return bufS;
@@ -82,9 +95,9 @@ namespace ZacksterString
 		char* operator + (const char* _Str)
 		{
 			int newSize = this->Size + strlen(_Str);
-			char* bufS = new char[newSize];
+			char* bufS = new char[newSize+1];
 			for (int i = 0; i < this->Size - 1; i++) bufS[i] = this->Str[i];
-			for (int i = 0; i < strlen(_Str) + 1; i++) bufS[i + this->Size - 1] = _Str[i];
+			for (unsigned int i = 0; i < strlen(_Str) + 1; i++) bufS[i + this->Size - 1] = _Str[i];
 			return bufS;
 		}
 		str& operator = (const str& _bufStr)
@@ -134,7 +147,7 @@ namespace ZacksterString
 		}
 		char& operator[](int r)
 		{
-			assert(r < this->Size && r >= 0);
+			assert(r < this->Size-1 && r >= 0);
 			return this->Str[r];
 		}
 	};
